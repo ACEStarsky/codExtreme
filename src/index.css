@@ -1,0 +1,190 @@
+/* ============================================================
+   Tailwind CSS v4 导入（v4 使用 @import 而非 @tailwind 指令）
+   ============================================================ */
+@import "tailwindcss";
+
+/* ============================================================
+   主题自定义（可选）
+   Tailwind v4 用 @theme 定义设计 token，
+   这里补充一个 gray-850，用于文件树等深色层级
+   ============================================================ */
+@theme {
+  --color-gray-850: #1a1f2b;
+}
+
+/* ============================================================
+   基础重置
+   ============================================================ */
+* {
+  /* 移除移动端点击高亮，避免按钮出现蓝色方块 */
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* 防止移动端整页回弹 / 双指缩放干扰编辑器手势 */
+  overscroll-behavior: none;
+  /* 使用系统字体栈，跨平台一致 */
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+  /* 深色底，避免加载瞬间白闪 */
+  background-color: #111827;
+  color: #f3f4f6;
+  /* 移动端禁止长按选中（编辑器内部会覆盖为可选中） */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 编辑器、输入框、预览内允许选择文本 */
+textarea,
+input,
+.cm-editor,
+iframe {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* ============================================================
+   滚动条样式（桌面端可见，移动端隐藏以节省空间）
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a5568;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #718096;
+}
+
+/* 移动端隐藏滚动条，但保留滚动能力 */
+@media (max-width: 767px) {
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+  * {
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
+/* ============================================================
+   CodeMirror 6 编辑器适配
+   ============================================================ */
+
+/* 让编辑器撑满父容器 */
+.cm-editor {
+  height: 100%;
+}
+
+/* 编辑区内容也撑满，便于滚动 */
+.cm-editor .cm-scroller {
+  font-family: "Fira Code", "JetBrains Mono", Consolas, "Courier New",
+    monospace;
+  line-height: 1.6;
+  /* 移动端手势滚动 */
+  -webkit-overflow-scrolling: touch;
+  /* 允许触摸滚动与缩放 */
+  touch-action: pan-x pan-y pinch-zoom;
+}
+
+/* 编辑区聚焦时去掉默认外框 */
+.cm-editor.cm-focused {
+  outline: none;
+}
+
+/* 输入框字号 ≥16px，避免 iOS 聚焦时自动放大页面 */
+@media (max-width: 767px) {
+  .cm-editor .cm-content {
+    font-size: 16px;
+  }
+}
+
+/* ============================================================
+   输入框通用优化
+   ============================================================ */
+input,
+textarea,
+select {
+  /* iOS 下 <16px 会触发自动缩放，统一设为 16px 再按需用 Tailwind 缩小视觉 */
+  font-size: 16px;
+  outline: none;
+}
+
+/* 自定义 focus 边框颜色（配合 Tailwind 的 focus:border-indigo-500 使用） */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #6366f1;
+}
+
+/* ============================================================
+   移动端安全区适配（iPhone 刘海 / 底部横条）
+   ============================================================ */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* ============================================================
+   动画
+   ============================================================ */
+
+/* AI 流式输出的光标闪烁 */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+.typing-cursor::after {
+  content: "▋";
+  display: inline-block;
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+  color: #818cf8;
+}
+
+/* 面板滑入动画（移动端 AI 面板等） */
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.2s ease-out;
+}
+
+/* ============================================================
+   工具类
+   ============================================================ */
+
+/* 单行省略 */
+.truncate-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 预览 iframe 全白底，避免透明 */
+.preview-iframe {
+  background: #ffffff;
+  border: none;
+}
